@@ -140,7 +140,7 @@ The pipeline is a collection of specialized agents and workers, each with a dist
 | **ReconciliationWorker** | `src/workers/ReconciliationWorker.js` | Takes a relationship with all its evidence, uses `ConfidenceScoringService` to calculate a final score, and persists validated relationships to the main `relationships` table. |
 | **GraphBuilder** | `src/agents/GraphBuilder.js` | The final step. Reads validated, high-confidence relationships from SQLite and executes efficient Cypher queries to build the final knowledge graph in Neo4j. |
 | **SelfCleaningAgent** | `src/agents/SelfCleaningAgent.js` | A maintenance agent that runs to find files that have been deleted from the filesystem and removes their corresponding nodes and relationships from the databases. |
-| **DeepSeekClient** | `src/utils/deepseekClient.js`| A native, dependency-free client for the DeepSeek LLM API, featuring concurrency management, automatic retries, and backoff logic. |
+| **AnthropicClient** | `src/utils/anthropicClient.js`| A native, dependency-free client for the Anthropic Claude Sonnet 4 API, featuring concurrency management, automatic retries, and backoff logic. |
 | **LLMResponseSanitizer**|`src/utils/LLMResponseSanitizer.js`| A defensive utility that cleans and repairs common formatting issues in LLM JSON output, making parsing more resilient. |
 | **QueueManager** | `src/utils/queueManager.js` | A singleton wrapper around BullMQ that manages all queue and worker connections to Redis. |
 | **DatabaseManager** | `src/utils/sqliteDb.js` | Manages the connection and schema for the SQLite database. |
@@ -192,7 +192,7 @@ Follow these steps to get the pipeline running on your local machine.
 -   **Node.js**: v18.x or later recommended.
 -   **Redis**: An instance of Redis for BullMQ. Can be run locally or via Docker.
 -   **Neo4j**: A Neo4j instance (v5.x recommended). Can be run locally or via Docker.
--   **DeepSeek API Key**: You need an API key from [DeepSeek](https://www.deepseek.com/) or another compatible LLM provider.
+-   **Anthropic API Key**: You need an API key from [Anthropic](https://console.anthropic.com/) for Claude.
 
 ### Installation
 
@@ -219,8 +219,8 @@ Follow these steps to get the pipeline running on your local machine.
     Open the `.env` file and fill in the details for your local setup:
     ```dotenv
     # --- LLM API Configuration ---
-    # Get your key from https://platform.deepseek.com/
-    DEEPSEEK_API_KEY=sk-your_secret_api_key
+    # Get your key from https://console.anthropic.com/
+    ANTHROPIC_API_KEY=sk-ant-api03-your_secret_api_key
 
     # --- Redis Configuration ---
     # URL for your Redis instance
