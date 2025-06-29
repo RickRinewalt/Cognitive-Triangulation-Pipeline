@@ -1,13 +1,13 @@
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
-const { getDeepseekClient } = require('../utils/deepseekClient');
+const { getAnthropicClient } = require('../utils/anthropicClient');
 const { getDb } = require('../utils/sqliteDb');
 
 class RelationshipResolver {
     constructor(db, apiKey) {
         this.db = db;
         this.apiKey = apiKey;
-        this.llmClient = getDeepseekClient();
+        this.llmClient = getAnthropicClient();
     }
 
     async _getDirectories() {
@@ -314,17 +314,16 @@ class RelationshipResolver {
         for (let i = 0; i < retries; i++) {
             try {
                 const response = await this.llmClient.createChatCompletion({
-                    model: 'deepseek-chat',
+                    model: 'claude-sonnet-4-20250514',
                     messages: [
                         { 
                             role: 'system', 
                             content: 'You are a code analysis expert. Analyze the provided code and identify relationships between components. Always respond with valid JSON in the format: {"relationships": [{"source_poi_id": "id1", "target_poi_id": "id2", "type": "CALLS|IMPORTS|EXTENDS|IMPLEMENTS", "reason": "explanation"}]}'
                         },
                         { role: 'user', content: prompt }
-                    ],
-                    response_format: { type: 'json_object' },
+                    ]
                 });
-                const content = JSON.parse(response.choices[0].message.content);
+                const content = JSON.parse(response.content[0].text);
                 // Basic validation
                 if (content && typeof content === 'object' && Array.isArray(content.relationships)) {
                     return content;

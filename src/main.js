@@ -13,7 +13,7 @@ const GraphBuilderWorker = require('./agents/GraphBuilder');
 const TransactionalOutboxPublisher = require('./services/TransactionalOutboxPublisher');
 const config = require('./config');
 const { v4: uuidv4 } = require('uuid');
-const { getDeepseekClient } = require('./utils/deepseekClient');
+const { getAnthropicClient } = require('./utils/anthropicClient');
 
 class CognitiveTriangulationPipeline {
     constructor(targetDirectory, dbPath = './database.db') {
@@ -23,7 +23,7 @@ class CognitiveTriangulationPipeline {
         this.queueManager = getQueueManagerInstance();
         this.dbManager = new DatabaseManager(this.dbPath);
         this.cacheClient = getCacheClient();
-        this.llmClient = getDeepseekClient();
+        this.llmClient = getAnthropicClient();
         this.outboxPublisher = new TransactionalOutboxPublisher(this.dbManager, this.queueManager);
         this.metrics = {
             startTime: null,
