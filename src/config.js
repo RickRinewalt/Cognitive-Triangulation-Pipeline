@@ -9,6 +9,9 @@
 require('dotenv').config();
 
 const config = {
+  // LLM API Configuration
+  ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+
   // SQLite Database Configuration
   SQLITE_DB_PATH: process.env.SQLITE_DB_PATH || './db.sqlite',
 
